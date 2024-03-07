@@ -134,9 +134,8 @@ async function handleSendTransaction(params) {
     try {
         console.log(params);
         const trans = params[0];
+        const nonce = await this.provider.getTransactionCount(params[0].from, 'pending');
         delete trans.from;
-
-        const nonce = await this.provider.getTransactionCount(params[0].to, 'latest');
 
         const feeData = await this.provider.getFeeData();
 
