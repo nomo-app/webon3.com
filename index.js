@@ -147,6 +147,7 @@ async function handleSendTransaction(params) {
         transaction.gasLimit = Math.ceil(Number(params[0].gas) * 3)
         transaction.maxFeePerGas = feeData.maxFeePerGas;
         transaction.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
+        transaction.gasPrice = feeData.gasPrice * 15n/10n;
 
         // Serialize the transaction
         // Send the serialized transaction to the native layer for signing
