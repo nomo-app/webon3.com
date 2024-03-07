@@ -144,7 +144,7 @@ async function handleSendTransaction(params) {
         transaction.nonce = nonce;
         transaction.chainId = Number(providerConfig.networkId);
 
-        transaction.gasLimit = Math.ceil(Number(params[0].gas) * 1.5)
+        transaction.gasLimit = Math.ceil(Number(params[0].gas) * 3)
         transaction.maxFeePerGas = feeData.maxFeePerGas;
         transaction.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
 
