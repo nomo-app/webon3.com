@@ -38,7 +38,6 @@ const manifest = {
         };
 
 nomo.installUrlAsWebOn({
-    // static/qa_manifest.json
     manifest: manifest,
     navigateBack: false,
     skipPermissionDialog: true,
