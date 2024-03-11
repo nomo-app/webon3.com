@@ -1,6 +1,7 @@
-# MetaMask WebOns
+# webon3.com MetaMask WebOns
 
 A glue code for making MetaMask-DApps working as a WebOn.
+Moreover, webon3.com enables to inject arbitrary JavaScript into WebOns.
 
 ## Manifest repository
 
