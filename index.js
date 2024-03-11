@@ -52,6 +52,8 @@ window.nomo = {
                 return handleSendTransaction(params);
             case 'eth_signTypedData_v4':
                 return eth_signTypedData_v4(params[0], params[1]);
+            case 'eth_getTransactionReceipt':
+                return window.provider.getTransactionReceipt(params[0]);
             default:
                 console.error(`Method ${method} is not implemented`);
                 return provider.send(method, params);
@@ -298,20 +300,13 @@ function getDartBridge() {
 };
 
 async function eth_signTypedData_v4(address, typedData) {
-    const objTypedData = JSON.parse(typedData);
-    if(objTypedData.domain.chainId === undefined || objTypedData.domain.chainId === null || objTypedData.domain.chainId === 'NaN') {
-        objTypedData.domain.chainId = 1;
-    }
-
-    const message = window.getMessage(objTypedData, true);
-    // uint8 to string without hex
-    const hex = ethers.utils.hexlify(message);
-    console.log("message hex", message)
-    const result = await invokeNomoFunction("nomoSignEvmMessage", {
-                    message: hex,
-                });
+    typedData = JSON.parse(typedData);
+    // typedData.domain.chainId = 1;
+    const result = await invokeNomoFunction("nomoSignTypedData", {
+        typedData: typedData
+    });
     console.log(result);
-        return result.sigHex;
+    return result.sigHex;
 }
 
 let abi = ethers.AbiCoder.defaultAbiCoder()
