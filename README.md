@@ -24,6 +24,7 @@ const manifest = {
             "webon_id": "uniswap",
             "webon_name": "Uniswap",
             "webon_version": "0.1.16",
+            "min_nomo_version": "0.4.0",
             "dependencies": [
                 "https://w.nomo.app/js/ethers.js",
                 "https://w.nomo.app/js/eip712.js",
