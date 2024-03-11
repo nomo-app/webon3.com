@@ -23,7 +23,6 @@ function getRpcUrlByChainId(chainId) {
     const rpcUrls = {
         '0x1': 'https://mainnet.infura.io/v3/099fc58e0de9451d80b18d7c74caa7c1', // Ethereum Mainnet
         '0x89': 'https://polygon-mainnet.infura.io/v3/099fc58e0de9451d80b18d7c74caa7c1', // Polygon Mainnet
-        // Add other chains and their RPC URLs here
     };
     return rpcUrls[chainId] || 'https://mainnet.infura.io/v3/'; // Fallback to Ethereum Mainnet
 }
@@ -110,29 +109,6 @@ async function handleEstimateGas(params) {
 
 // Transaction Sending Logic
 async function handleSendTransaction(params) {
-
-//    const allowedTransactionKeys = {
-//          chainId: true,
-//          data: true,
-//          gasLimit: true,
-//          gasPrice: true,
-//          nonce: true,
-//          to: true,
-//          value: true,
-//    }; // ethers.js enforced strict rules on what properties are allowed in unsignedTx
-//    const unsignedTx = {};
-//    for (const key of Object.keys(allowedTransactionKeys)) {
-//      unsignedTx[key] = (transaction)[key];
-//    }
-//
-//    unsignedTx['chainId'] = Number(providerConfig.networkId);
-//
-//    unsignedTx['gasPrice'] = transaction.gas;
-//    // calculate gas limit
-//
-//    // Assume this.provider is an instance of ethers.providers.JsonRpcProvider
-//    // and it has been set up previously in your code
-
     try {
         console.log(params);
         const trans = params[0];
@@ -235,17 +211,6 @@ window.fulfillPromiseFromFlutter = function(base64FromFlutter) {
     return "OK";
 };
 
-// Append Signature to Transaction
-function appendSignatureToTx(unsignedTx, sigHexFromNative) {
-    const sigHex = sigHexFromNative.startsWith("0x") ?
-        sigHexFromNative :
-        "0x" + sigHexFromNative;
-    if (sigHex.length !== 130) {
-        // throw new Error("Unexpected sigHexFromNative length");
-    }
-    return ethers.utils.serializeTransaction(unsignedTx, sigHex);
-}
-
 async function invokeNomoFunction(functionName, args) {
     window.invocationCounter++;
     const invocationID = window.invocationCounter.toString();
@@ -307,98 +272,4 @@ async function eth_signTypedData_v4(address, typedData) {
     });
     console.log(result);
     return result.sigHex;
-}
-
-let abi = ethers.AbiCoder.defaultAbiCoder()
-
-// Recursively finds all the dependencies of a type
-function dependencies(primaryType, types, found = []) {
-    if (found.includes(primaryType)) {
-        return found;
-    }
-    if (types[primaryType] === undefined) {
-        return found;
-    }
-    found.push(primaryType);
-    for (let field of types[primaryType]) {
-        for (let dep of dependencies(field.type, types, found)) {
-            if (!found.includes(dep)) {
-                found.push(dep);
-            }
-        }
-    }
-    return found;
-}
-
-function encodeType(primaryType, types) {
-    let deps = dependencies(primaryType, types);
-    deps = deps.filter(t => t != primaryType);
-    deps = [primaryType].concat(deps.sort());
-
-    // Format as a string with fields
-    let result = '';
-    for (let type of deps) {
-        result += `${type}(${types[type].map(({ name, type }) => `${type} ${name}`).join(',')})`;
-    }
-    return result;
-}
-
-function keccakFromString(value) {
-    return ethers.keccak256(ethers.toUtf8Bytes(value));
-}
-
-function typeHash(primaryType, types) {
-    return keccakFromString(encodeType(primaryType, types));
-}
-
-function encodeData(primaryType, data, types) {
-    let encTypes = [];
-    let encValues = [];
-
-    // Add typehash
-    encTypes.push('bytes32');
-    encValues.push(typeHash(primaryType, types));
-
-    // Add field contents
-    for (let field of types[primaryType]) {
-        let value = data[field.name];
-        if (field.type == 'string' || field.type == 'bytes') {
-            encTypes.push('bytes32');
-            value = keccakFromString(value);
-            encValues.push(value);
-        } else if (types[field.type] !== undefined) {
-            encTypes.push('bytes32');
-            value = ethers.keccak256(encodeData(field.type, value, types));
-            encValues.push(value);
-        } else if (field.type.lastIndexOf(']') === field.type.length - 1) {
-            throw 'TODO: Arrays currently unimplemented in encodeData';
-        } else {
-            encTypes.push(field.type);
-            encValues.push(value);
-        }
-    }
-    console.log(abi.encode(encTypes, encValues));
-    return abi.encode(encTypes, encValues);
-}
-
-function structHash(primaryType, data, types) {
-    return ethers.keccak256(encodeData(primaryType, data, types));
-}
-
-function signHash(typedData) {
-    const types = typedData.types;
-
-    var a = Buffer.from('1901', 'hex')
-    var b = structHash('EIP712Domain', typedData.domain, types)
-    const bBuffer = Buffer.from(b.substring(2), 'hex')
-    var c = structHash(typedData.primaryType, typedData.message, types)
-    const cBuffer = Buffer.from(c.substring(2), 'hex')
-    console.log(a, bBuffer, cBuffer, "aaaaa");
-    return ethers.keccak256(
-        Buffer.concat([
-            a,
-            bBuffer,
-            cBuffer,
-        ]),
-    );
 }
