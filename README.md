@@ -24,7 +24,7 @@ Either way, you will need to create a "manifest" for your MetaMask-enabled Webon
 
 ### Option A: Upload your manifest to webon3.com
 
-You can deploy your manfifest to `https://webon3.com/<your-webonurl>/nomo_manifest.json` .
+You can deploy your manifest to `https://webon3.com/<your-webonurl>/nomo_manifest.json` .
 Please fork this repo and submit a PR for doing so.
 
 ### Option B: Pass a manifest to "nomo.installUrlAsWebOn"
