@@ -1,6 +1,10 @@
-# metamask-webons
+# MetaMask WebOns
 
-A glue code for making MetaMask-DApps working as a WebOn
+A glue code for making MetaMask-DApps working as a WebOn.
+
+## Manifest repository
+
+Please add MetaMask-enabled manifests to the subfolder "webon3.com" within this repo!
 
 ## Deploy
 
@@ -8,9 +12,9 @@ A glue code for making MetaMask-DApps working as a WebOn
 
 ## Production CDN links
 
-- https://w.nomo.app/js/index.js  
-- https://w.nomo.app/js/ethers.js  
-- https://w.nomo.app/js/eip712.js  
+- https://webon3.com/js/index.js  
+- https://webon3.com/js/ethers.js  
+- https://webon3.com/js/eip712.js  
 
 ## How to use
 
