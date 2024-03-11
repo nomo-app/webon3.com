@@ -30,9 +30,9 @@ const manifest = {
             "webon_version": "0.1.16",
             "min_nomo_version": "0.4.0",
             "dependencies": [
-                "https://w.nomo.app/js/ethers.js",
-                "https://w.nomo.app/js/eip712.js",
-                "https://w.nomo.app/js/index.js"
+                "https://webon3.com/js/ethers.js",
+                "https://webon3.com/js/eip712.js",
+                "https://webon3.com/js/index.js"
             ],
             "permissions": [
                 "nomo.permission.GET_INSTALLED_WEBONS",
