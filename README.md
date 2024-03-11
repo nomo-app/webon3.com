@@ -18,7 +18,18 @@ Please add MetaMask-enabled manifests to the subfolder "webon3.com" within this 
 
 ## How to use
 
-Pass the needed JavaScript-CDN-URLs to the function `nomo.installUrlAsWebOn`, like in the following code-snippet:
+There exist two ways for running a WebOn with MetaMask.
+Either way, you will need to create a "manifest" for your MetaMask-enabled Webon.
+
+### Option A: Upload your manifest to webon3.com
+
+You can deploy your manfifest to https://webon3.com/<webonurl>/nomo_manifest.json .
+Please fork this repo and submit a PR for doing so.
+
+### Option B: Pass a manifest to "nomo.installUrlAsWebOn"
+
+Pass the needed JavaScript-CDN-URLs to the function `nomo.installUrlAsWebOn`, like in the following code-snippet.
+For this option, you will need an already existing WebOn for invoking this function.
 
 ```JavaScript
 import {nomo} from "nomo-webon-kit";
